@@ -16,20 +16,8 @@ RUN apt-get update && apt-get install -y wget unzip \
 # Crear directorio para datos persistentes
 RUN mkdir -p /fuseki/databases/PROYECTOGESTION
 
-# Configurar CORS
-RUN mkdir -p /fuseki/webapp/WEB-INF
-COPY web.xml /fuseki/webapp/WEB-INF/web.xml
-
 # Copiar archivo de configuración
 COPY config.ttl /fuseki/config.ttl
-
-# Crear un dataset de ejemplo si no existe
-RUN echo "@prefix :      <http://www.semanticweb.org/usuariotsc/ontologies/2025/4/PROYECTO/> . \
-@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . \
-@prefix owl:   <http://www.w3.org/2002/07/owl#> . \
-:Paciente rdf:type owl:Class . \
-:Cirugia rdf:type owl:Class . \
-:SalaCirugia rdf:type owl:Class ." > /fuseki/databases/PROYECTOGESTION/initial-data.ttl
 
 # Exponer el puerto
 EXPOSE 3030
