@@ -6,28 +6,17 @@
 @prefix fuseki: <http://jena.apache.org/fuseki#> .
 
 # Configuración del servidor Fuseki
-[] rdf:type fuseki:Server ;
-   fuseki:services (
-     :service
-   ) .
+:service_tdb_all  a                   fuseki:Service ;
+    rdfs:label                        "TDB PROYECTOGESTION" ;
+    fuseki:name                       "PROYECTOGESTION" ;
+    fuseki:serviceQuery               "query" , "sparql" ;
+    fuseki:serviceUpdate              "update" ;
+    fuseki:serviceUpload              "upload" ;
+    fuseki:serviceReadWriteGraphStore "data" ;
+    fuseki:serviceReadGraphStore      "get" ;
+    fuseki:dataset                    :tdb_dataset_readwrite .
 
-# Configuración del servicio
-:service rdf:type fuseki:Service ;
-    fuseki:name "PROYECTOGESTION" ;
-    fuseki:endpoint [ fuseki:operation fuseki:query ; fuseki:name "query" ] ;
-    fuseki:endpoint [ fuseki:operation fuseki:update ; fuseki:name "update" ] ;
-    fuseki:endpoint [ fuseki:operation fuseki:gsp-r ; fuseki:name "get" ] ;
-    fuseki:endpoint [ fuseki:operation fuseki:gsp-rw ; fuseki:name "data" ] ;
-    fuseki:endpoint [ fuseki:operation fuseki:upload ; fuseki:name "upload" ] ;
-    fuseki:dataset :dataset ;
-    .
-
-# Configuración del dataset
-:dataset rdf:type ja:RDFDataset ;
-    ja:defaultGraph :model ;
-    .
-
-# Configuración del modelo
-:model rdf:type ja:MemoryModel ;
-    ja:content [ja:externalContent <file:///fuseki/databases/PROYECTOGESTION/initial-data.ttl>] ;
-    .
+# Configuración del dataset TDB
+:tdb_dataset_readwrite  a             tdb:DatasetTDB ;
+    tdb:location                      "databases/PROYECTOGESTION" ;
+    ja:context [ ja:cxtName "arq:queryTimeout" ; ja:cxtValue "30000" ] ;
