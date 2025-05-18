@@ -6,11 +6,11 @@ RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 # Crear directorio para Fuseki
 WORKDIR /opt/fuseki
 
-# Descargar y descomprimir Fuseki
-RUN wget https://dlcdn.apache.org/jena/binaries/apache-jena-fuseki-4.9.0.tar.gz && \
-    tar -xzf apache-jena-fuseki-4.9.0.tar.gz && \
-    rm apache-jena-fuseki-4.9.0.tar.gz && \
-    mv apache-jena-fuseki-4.9.0 fuseki
+# Descargar y descomprimir Fuseki (versión actualizada)
+RUN wget https://archive.apache.org/dist/jena/binaries/apache-jena-fuseki-4.8.0.tar.gz && \
+    tar -xzf apache-jena-fuseki-4.8.0.tar.gz && \
+    rm apache-jena-fuseki-4.8.0.tar.gz && \
+    mv apache-jena-fuseki-4.8.0 fuseki
 
 # Configurar directorios
 RUN mkdir -p /opt/fuseki/fuseki/databases/PROYECTOGESTION
