@@ -19,6 +19,10 @@ RUN mkdir -p /fuseki/databases/PROYECTOGESTION
 # Copiar archivo de configuración
 COPY config.ttl /fuseki/config.ttl
 
+# Configurar CORS
+RUN mkdir -p /fuseki/webapp/WEB-INF
+COPY web.xml /fuseki/webapp/WEB-INF/web.xml
+
 # Exponer el puerto
 EXPOSE 3030
 
