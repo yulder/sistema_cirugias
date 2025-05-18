@@ -1,0 +1,26 @@
+FROM openjdk:11-jre-slim
+
+# Instalar wget
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+
+# Crear directorio para Fuseki
+WORKDIR /opt/fuseki
+
+# Descargar y descomprimir Fuseki
+RUN wget https://dlcdn.apache.org/jena/binaries/apache-jena-fuseki-4.9.0.tar.gz && \
+    tar -xzf apache-jena-fuseki-4.9.0.tar.gz && \
+    rm apache-jena-fuseki-4.9.0.tar.gz && \
+    mv apache-jena-fuseki-4.9.0 fuseki
+
+# Configurar directorios
+RUN mkdir -p /opt/fuseki/fuseki/databases/PROYECTOGESTION
+RUN mkdir -p /opt/fuseki/fuseki/run
+
+# Copiar archivo de configuración
+COPY config.ttl /opt/fuseki/fuseki/config.ttl
+
+# Exponer puerto
+EXPOSE 3030
+
+# Comando para iniciar Fuseki
+CMD ["/opt/fuseki/fuseki/fuseki-server", "--config=/opt/fuseki/fuseki/config.ttl"]

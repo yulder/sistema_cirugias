@@ -1,0 +1,23 @@
+@prefix :      <#> .
+@prefix fuseki: <http://jena.apache.org/fuseki#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tdb2:  <http://jena.apache.org/2016/tdb#> .
+@prefix ja:    <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+[] rdf:type fuseki:Server ;
+   fuseki:services (
+     :service1
+   ) .
+
+:service1 rdf:type fuseki:Service ;
+    fuseki:name "PROYECTOGESTION" ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ; ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:update ; ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:gsp-r ; ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:gsp-rw ; ] ;
+    fuseki:dataset :dataset1 .
+
+:dataset1 rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location "/opt/fuseki/fuseki/databases/PROYECTOGESTION" ;
+    .
