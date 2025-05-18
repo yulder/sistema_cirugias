@@ -1,26 +1,26 @@
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:11-jre
 
-# Instalar wget
-RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+WORKDIR /fuseki
 
-# Crear directorio para Fuseki
-WORKDIR /opt/fuseki
+# Descargar y descomprimir Apache Jena Fuseki
+RUN apt-get update && apt-get install -y wget unzip \
+    && wget https://archive.apache.org/dist/jena/binaries/apache-jena-fuseki-4.8.0.zip \
+    && unzip apache-jena-fuseki-4.8.0.zip \
+    && mv apache-jena-fuseki-4.8.0/* /fuseki/ \
+    && rm -rf apache-jena-fuseki-4.8.0 apache-jena-fuseki-4.8.0.zip \
+    && apt-get remove -y wget unzip \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Descargar y descomprimir Fuseki (versión actualizada)
-RUN wget https://archive.apache.org/dist/jena/binaries/apache-jena-fuseki-4.8.0.tar.gz && \
-    tar -xzf apache-jena-fuseki-4.8.0.tar.gz && \
-    rm apache-jena-fuseki-4.8.0.tar.gz && \
-    mv apache-jena-fuseki-4.8.0 fuseki
-
-# Configurar directorios
-RUN mkdir -p /opt/fuseki/fuseki/databases/PROYECTOGESTION
-RUN mkdir -p /opt/fuseki/fuseki/run
+# Crear directorio para datos persistentes
+RUN mkdir -p /fuseki/databases/PROYECTOGESTION
 
 # Copiar archivo de configuración
-COPY config.ttl /opt/fuseki/fuseki/config.ttl
+COPY config.ttl /fuseki/config.ttl
 
-# Exponer puerto
+# Exponer el puerto
 EXPOSE 3030
 
-# Comando para iniciar Fuseki
-CMD ["/opt/fuseki/fuseki/fuseki-server", "--config=/opt/fuseki/fuseki/config.ttl"]
+# Comando para iniciar Fuseki con la configuración
+CMD ["/fuseki/fuseki-server", "--config=/fuseki/config.ttl"]
